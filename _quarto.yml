@@ -1,0 +1,21 @@
+project:
+  type: book
+  output-dir: docs
+
+book:
+  title: "Regression and Other Stories: Python Implementation"
+  author: "Farhan Reynaldo"
+  chapters:
+    - index.md
+    - part: "Chapter 10"
+      chapters:
+      - ros/ch10/kidiq.ipynb
+      - ros/ch10/height_and_weight.ipynb
+      - ros/ch10/beauty.ipynb
+
+format:
+  html:
+    theme: cosmo
+
+
+
