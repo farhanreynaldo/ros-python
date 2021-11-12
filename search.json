@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Regression and Other Stories: Python Implementation",
     "section": "",
-    "text": "Introduction\nPython implementation for Regression and Other Stories, using Bambi."
+    "text": "Introduction\nThis book is the Python implementation for Regression and Other Stories by Gelman, Hill, and Vehtari, using Bambi. The official code can be found from Vehtari at https://github.com/avehtari/ROS-Examples/."
   },
   {
     "objectID": "ros/ch10/kidiq.html#a-single-predictor",
