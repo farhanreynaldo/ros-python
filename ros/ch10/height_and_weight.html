@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang=""><head>
+  <meta charset="utf-8">
+  <meta name="generator" content="quarto-0.2.232">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <meta name="author" content="Farhan Reynaldo">
+  <title>Regression and Other Stories: Python Implementation - 2&nbsp; Regression and Other Stories: Height and weight</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+  <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+  <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+  <script src="../../site_libs/clipboard/clipboard.min.js"></script>
+  <meta name="quarto:offset" content="../../">
+  <script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+  <script src="../../site_libs/quarto-search/fuse.min.js"></script>
+  <script src="../../site_libs/quarto-search/quarto-search.js"></script>
+  <link href="../../ros/ch10/beauty.html" rel="next">
+  <link href="../../ros/ch10/kidiq.html" rel="prev">
+  <script src="../../site_libs/quarto-html/quarto.js"></script>
+  <script src="../../site_libs/quarto-html/popper.min.js"></script>
+  <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+  <script src="../../site_libs/quarto-html/anchor.min.js"></script>
+  <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+  <link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet">
+  <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+  <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet">
+  <script id="quarto-search-options" type="application/json">{
+    "location": "sidebar",
+    "copy-button": false,
+    "collapse-after": 2,
+    "panel-placement": "start",
+    "type": "textbox",
+    "limit": 20
+  }</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+</head>
+<body>
+<div id="quarto-search-results"></div>
+<header id="quarto-header" class="headroom fixed-top">
+<nav class="quarto-secondary-nav py-2 d-lg-none d-md-block " data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <div class="container-fluid d-flex justify-content-between">
+    <h1 class="quarto-secondary-nav-title mb-0 fs-3 d-inline"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression and Other Stories: Height and weight</span></h1>
+    <button type="button" class="quarto-btn-toggle btn d-lg-none py-0 px-1 d-inline-block border-0 ">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+</nav>
+</header>
+ <!-- /navbar/sidebar -->
+<div class="container-fluid quarto-container d-flex flex-column page-layout-article" id="quarto-content">
+<div class="row flex-fill">
+  <div id="quarto-sidebar" class="col col-12 col-lg-3 d-lg-flex px-0 pt-0 sidebar collapse sidebar-navigation">
+    <nav class="ms-lg-auto floating overflow-auto">
+  <div class="px-3 pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Regression and Other Stories: Python Implementation</a> 
+        <div class="sidebar-tools-main">
+</div>
+    </div>
+  </div>
+    <div class="px-3 mt-2 flex-shrink-0 align-items-center">
+      <div class="sidebar-search">
+      <div id="quarto-search" class="mb-0 " title="Search">
+</div>
+      </div>
+    </div>
+  <div class="sidebar-menu-container"> 
+  <ul class="list-unstyled mt-1 px-3">
+      <li class="sidebar-item">
+  <a href="../../index.html" class="">Introduction</a>
+</li>
+      <ul class="list-unstyled sidebar-section depth1">
+    <li class="">
+        <div class="me-auto">
+            <a class="sidebar-section-item d-inline-flex text-start w-100 " data-bs-toggle="collapse" data-bs-target="#chapter10-collapse" aria-expanded="true">
+              <div class="me-auto sidebar-section-item">Chapter 10</div>
+            <div><i class="bi bi-chevron-right ms-2"></i></div>
+            </a>
+        </div>
+      <div class="collapse  show" id="chapter10-collapse">
+        <ul class="list-unstyled sidebar-item-contents">
+          <li class="sidebar-item">
+  <a href="../../ros/ch10/kidiq.html" class=""><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Regression and Other Stories: KidIQ</span></a>
+</li>
+          <li class="sidebar-item">
+  <a href="../../ros/ch10/height_and_weight.html" class="active"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression and Other Stories: Height and weight</span></a>
+</li>
+          <li class="sidebar-item">
+  <a href="../../ros/ch10/beauty.html" class=""><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Regression and Other Stories: Beauty and Teaching Quality</span></a>
+</li>
+        </ul>
+      </div>
+    </li>
+  </ul>
+  </ul>
+  </div>
+</nav>
+  </div>
+  <div id="quarto-toc-sidebar" class=" pt-0 col col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-toc order-last"><nav id="TOC" role="doc-toc">
+<h2 id="toc-title">On this page</h2>
+<ul>
+<li><a href="#simulating-uncertainty-for-linear-predictors-and-predicted-values" class="nav-link active" data-scroll-target="#simulating-uncertainty-for-linear-predictors-and-predicted-values"> <span class="header-section-number">2.1</span> Simulating uncertainty for linear predictors and predicted values</a>
+<ul class="collapse">
+<li><a href="#predict-weight-in-pounds-from-height-in-inches" class="nav-link" data-scroll-target="#predict-weight-in-pounds-from-height-in-inches"> <span class="header-section-number">2.1.1</span> Predict weight (in pounds) from height (in inches)</a></li>
+<li><a href="#center-heights" class="nav-link" data-scroll-target="#center-heights"> <span class="header-section-number">2.1.2</span> Center heights</a></li>
+<li><a href="#point-prediction" class="nav-link" data-scroll-target="#point-prediction"> <span class="header-section-number">2.1.3</span> Point prediction</a></li>
+<li><a href="#posterior-simulations" class="nav-link" data-scroll-target="#posterior-simulations"> <span class="header-section-number">2.1.4</span> Posterior simulations</a></li>
+<li><a href="#posterior-predictive-simulations" class="nav-link" data-scroll-target="#posterior-predictive-simulations"> <span class="header-section-number">2.1.5</span> Posterior predictive simulations</a></li>
+</ul></li>
+<li><a href="#indicator-variables" class="nav-link" data-scroll-target="#indicator-variables"> <span class="header-section-number">2.2</span> Indicator variables</a>
+<ul class="collapse">
+<li><a href="#predict-weight-in-pounds-from-height-in-inches-1" class="nav-link" data-scroll-target="#predict-weight-in-pounds-from-height-in-inches-1"> <span class="header-section-number">2.2.1</span> Predict weight (in pounds) from height (in inches)</a></li>
+<li><a href="#including-a-binary-variable-in-a-regression" class="nav-link" data-scroll-target="#including-a-binary-variable-in-a-regression"> <span class="header-section-number">2.2.2</span> Including a binary variable in a regression</a></li>
+<li><a href="#using-indicator-variables-for-multiple-levels-of-a-categorical-predictor" class="nav-link" data-scroll-target="#using-indicator-variables-for-multiple-levels-of-a-categorical-predictor"> <span class="header-section-number">2.2.3</span> Using indicator variables for multiple levels of a categorical predictor</a></li>
+<li><a href="#choose-the-baseline-category-by-setting-the-levels" class="nav-link" data-scroll-target="#choose-the-baseline-category-by-setting-the-levels"> <span class="header-section-number">2.2.4</span> Choose the baseline category by setting the levels</a></li>
+<li><a href="#alternatively-create-indicators-for-the-four-ethnic-groups-directly" class="nav-link" data-scroll-target="#alternatively-create-indicators-for-the-four-ethnic-groups-directly"> <span class="header-section-number">2.2.5</span> Alternatively create indicators for the four ethnic groups directly:</a></li>
+</ul></li>
+</ul>
+</nav></div>
+  <div class="col mx-auto col-sm-12 col-md-9 col-lg-7 col-xl-7 px-lg-4 pe-xxl-4 ps-xxl-3">
+<main>
+<header id="title-block-header">
+<div class="quarto-title-block d-none d-lg-block"><div><h1 class="title d-none d-lg-block"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Regression and Other Stories: Height and weight</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Code</button></div></div>
+<p class="author">Farhan Reynaldo</p>
+<p class="date">Nov 11th, 2021</p>
+</header>
+
+<div class="sourceCode" id="cb1"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> arviz <span class="im">as</span> az</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> bambi <span class="im">as</span> bmb</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>DATA_PATH <span class="op">=</span> Path(<span class="st">"../data"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>az.style.use(<span class="st">"arviz-white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode" id="cb3"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>earnings <span class="op">=</span> pd.read_csv(DATA_PATH <span class="op">/</span> <span class="st">"earnings.csv"</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>earnings.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display" data-execution_count="3">
+<div>
+
+<table class="dataframe table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>height</th>
+      <th>weight</th>
+      <th>male</th>
+      <th>earn</th>
+      <th>earnk</th>
+      <th>ethnicity</th>
+      <th>education</th>
+      <th>mother_education</th>
+      <th>father_education</th>
+      <th>walk</th>
+      <th>exercise</th>
+      <th>smokenow</th>
+      <th>tense</th>
+      <th>angry</th>
+      <th>age</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>74</td>
+      <td>210.0</td>
+      <td>1</td>
+      <td>50000.0</td>
+      <td>50.0</td>
+      <td>White</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>3</td>
+      <td>3</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>45</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>66</td>
+      <td>125.0</td>
+      <td>0</td>
+      <td>60000.0</td>
+      <td>60.0</td>
+      <td>White</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>6</td>
+      <td>5</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>64</td>
+      <td>126.0</td>
+      <td>0</td>
+      <td>30000.0</td>
+      <td>30.0</td>
+      <td>White</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>8</td>
+      <td>1</td>
+      <td>2.0</td>
+      <td>1.0</td>
+      <td>1.0</td>
+      <td>29</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>65</td>
+      <td>200.0</td>
+      <td>0</td>
+      <td>25000.0</td>
+      <td>25.0</td>
+      <td>White</td>
+      <td>17.0</td>
+      <td>17.0</td>
+      <td>NaN</td>
+      <td>8</td>
+      <td>1</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>57</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>63</td>
+      <td>110.0</td>
+      <td>0</td>
+      <td>50000.0</td>
+      <td>50.0</td>
+      <td>Other</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>16.0</td>
+      <td>5</td>
+      <td>6</td>
+      <td>2.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>91</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<section id="simulating-uncertainty-for-linear-predictors-and-predicted-values" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="simulating-uncertainty-for-linear-predictors-and-predicted-values"><span class="header-section-number">2.1</span> Simulating uncertainty for linear predictors and predicted values</h2>
+<section id="predict-weight-in-pounds-from-height-in-inches" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="predict-weight-in-pounds-from-height-in-inches"><span class="header-section-number">2.1.1</span> Predict weight (in pounds) from height (in inches)</h3>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode" id="cb4"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>model_1 <span class="op">=</span> bmb.Model(<span class="st">"weight ~ height"</span>, data<span class="op">=</span>earnings, dropna<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>idata_1 <span class="op">=</span> model_1.fit()</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>az.summary(idata_1, kind<span class="op">=</span><span class="st">"stats"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [8000/8000 00:03&lt;00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    
+</div>
+<div class="cell-output-display" data-execution_count="4">
+<div>
+
+<table class="dataframe table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>-172.922</td>
+      <td>11.899</td>
+      <td>-194.217</td>
+      <td>-149.535</td>
+    </tr>
+    <tr>
+      <th>height</th>
+      <td>4.944</td>
+      <td>0.179</td>
+      <td>4.597</td>
+      <td>5.263</td>
+    </tr>
+    <tr>
+      <th>weight_sigma</th>
+      <td>28.980</td>
+      <td>0.489</td>
+      <td>28.062</td>
+      <td>29.889</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<p>Predict weight for 66 inches person</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode" id="cb5"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>stats_1 <span class="op">=</span> az.summary(idata_1, kind<span class="op">=</span><span class="st">"stats"</span>)[<span class="st">"mean"</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>predicted_1 <span class="op">=</span> stats_1[<span class="st">"Intercept"</span>] <span class="op">+</span> stats_1[<span class="st">"height"</span>] <span class="op">*</span> <span class="dv">66</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(predicted_1, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display" data-execution_count="5">
+<pre><code>153.4</code></pre>
+</div>
+</div>
+<p>or</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode" id="cb7"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> pd.DataFrame(<span class="bu">dict</span>(height<span class="op">=</span>[<span class="dv">66</span>]))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>model_1.predict(idata_1, data<span class="op">=</span>new)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>predicted_1 <span class="op">=</span> idata_1.posterior[<span class="st">"weight_mean"</span>].values.mean()</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(predicted_1, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display" data-execution_count="6">
+<pre><code>153.4</code></pre>
+</div>
+</div>
+</section>
+<section id="center-heights" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="center-heights"><span class="header-section-number">2.1.2</span> Center heights</h3>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode" id="cb9"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>earnings[<span class="st">"c_height"</span>] <span class="op">=</span> earnings[<span class="st">"height"</span>] <span class="op">-</span> <span class="dv">66</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>model_2 <span class="op">=</span> bmb.Model(<span class="st">"weight ~ c_height"</span>, data<span class="op">=</span>earnings, dropna<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>idata_2 <span class="op">=</span> model_2.fit()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>az.summary(idata_2, kind<span class="op">=</span><span class="st">"stats"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [8000/8000 00:04&lt;00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    
+</div>
+<div class="cell-output-display" data-execution_count="7">
+<div>
+
+<table class="dataframe table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>153.373</td>
+      <td>0.698</td>
+      <td>152.118</td>
+      <td>154.718</td>
+    </tr>
+    <tr>
+      <th>c_height</th>
+      <td>4.948</td>
+      <td>0.179</td>
+      <td>4.628</td>
+      <td>5.290</td>
+    </tr>
+    <tr>
+      <th>weight_sigma</th>
+      <td>28.961</td>
+      <td>0.486</td>
+      <td>28.057</td>
+      <td>29.855</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="point-prediction" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="point-prediction"><span class="header-section-number">2.1.3</span> Point prediction</h3>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode" id="cb10"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> pd.DataFrame(<span class="bu">dict</span>(c_height<span class="op">=</span>[<span class="dv">4</span>]))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>model_2.predict(idata_2, data<span class="op">=</span>new)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>predicted_2 <span class="op">=</span> idata_2.posterior[<span class="st">"weight_mean"</span>].values.mean()</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="bu">round</span>(predicted_2, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display" data-execution_count="8">
+<pre><code>173.2</code></pre>
+</div>
+</div>
+</section>
+<section id="posterior-simulations" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="posterior-simulations"><span class="header-section-number">2.1.4</span> Posterior simulations</h3>
+<p>variation coming from posterior uncertainty in the coefficients</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode" id="cb12"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>linpred_2 <span class="op">=</span> model_2.predict(idata_2, data<span class="op">=</span>new, inplace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>plt.hist(linpred_2.posterior[<span class="st">"weight_mean"</span>].values.ravel(), color<span class="op">=</span><span class="st">"gray"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="height_and_weight_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+<section id="posterior-predictive-simulations" class="level3" data-number="2.1.5">
+<h3 data-number="2.1.5" class="anchored" data-anchor-id="posterior-predictive-simulations"><span class="header-section-number">2.1.5</span> Posterior predictive simulations</h3>
+<p>variation coming from posterior uncertainty in the coefficients and predictive uncertainty</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode" id="cb13"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>postpred_2 <span class="op">=</span> model_2.predict(idata_2, data<span class="op">=</span>new, kind<span class="op">=</span><span class="st">"pps"</span>, inplace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>plt.hist(postpred_2.posterior_predictive[<span class="st">"weight"</span>].values.ravel(), color<span class="op">=</span><span class="st">"gray"</span>)<span class="op">;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="height_and_weight_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="indicator-variables" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="indicator-variables"><span class="header-section-number">2.2</span> Indicator variables</h2>
+<section id="predict-weight-in-pounds-from-height-in-inches-1" class="level3" data-number="2.2.1">
+<h3 data-number="2.2.1" class="anchored" data-anchor-id="predict-weight-in-pounds-from-height-in-inches-1"><span class="header-section-number">2.2.1</span> Predict weight (in pounds) from height (in inches)</h3>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> pd.DataFrame(<span class="bu">dict</span>(height<span class="op">=</span>[<span class="dv">66</span>]))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> model_1.predict(idata_1, data<span class="op">=</span>new, kind<span class="op">=</span><span class="st">"pps"</span>, inplace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>pred_mean <span class="op">=</span> pred.posterior_predictive[<span class="st">"weight"</span>].values.mean()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>pred_sd <span class="op">=</span> pred.posterior_predictive[<span class="st">"weight"</span>].values.std()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Predicted weight for a 66-inch-tall person is </span><span class="sc">{</span><span class="bu">round</span>(pred_mean)<span class="sc">}</span><span class="ss"> pounds with a sd of </span><span class="sc">{</span><span class="bu">round</span>(pred_sd)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Predicted weight for a 66-inch-tall person is 153 pounds with a sd of 29</code></pre>
+</div>
+</div>
+</section>
+<section id="including-a-binary-variable-in-a-regression" class="level3" data-number="2.2.2">
+<h3 data-number="2.2.2" class="anchored" data-anchor-id="including-a-binary-variable-in-a-regression"><span class="header-section-number">2.2.2</span> Including a binary variable in a regression</h3>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>model_3 <span class="op">=</span> bmb.Model(<span class="st">"weight ~ c_height + male"</span>, data<span class="op">=</span>earnings, dropna<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>idata_3 <span class="op">=</span> model_3.fit()</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>az.summary(idata_3, kind<span class="op">=</span><span class="st">"stats"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [8000/8000 00:06&lt;00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    
+</div>
+<div class="cell-output-display" data-execution_count="12">
+<div>
+
+<table class="dataframe table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>149.530</td>
+      <td>0.951</td>
+      <td>147.783</td>
+      <td>151.342</td>
+    </tr>
+    <tr>
+      <th>c_height</th>
+      <td>3.881</td>
+      <td>0.253</td>
+      <td>3.418</td>
+      <td>4.374</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>11.867</td>
+      <td>2.028</td>
+      <td>8.027</td>
+      <td>15.691</td>
+    </tr>
+    <tr>
+      <th>weight_sigma</th>
+      <td>28.690</td>
+      <td>0.487</td>
+      <td>27.762</td>
+      <td>29.588</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode" id="cb17"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>new <span class="op">=</span> pd.DataFrame(<span class="bu">dict</span>(c_height<span class="op">=</span>[<span class="dv">4</span>], male<span class="op">=</span>[<span class="dv">0</span>]))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>pred <span class="op">=</span> model_3.predict(idata_3, data<span class="op">=</span>new, kind<span class="op">=</span><span class="st">"pps"</span>, inplace<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>pred_mean <span class="op">=</span> pred.posterior_predictive[<span class="st">"weight"</span>].values.mean()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>pred_sd <span class="op">=</span> pred.posterior_predictive[<span class="st">"weight"</span>].values.std()</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="ss">f"Predicted weight for a 70-inch-tall female is </span><span class="sc">{</span><span class="bu">round</span>(pred_mean)<span class="sc">}</span><span class="ss"> pounds with a sd of </span><span class="sc">{</span><span class="bu">round</span>(pred_sd)<span class="sc">}</span><span class="ss">"</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-stdout">
+<pre><code>Predicted weight for a 70-inch-tall female is 165 pounds with a sd of 29</code></pre>
+</div>
+</div>
+</section>
+<section id="using-indicator-variables-for-multiple-levels-of-a-categorical-predictor" class="level3" data-number="2.2.3">
+<h3 data-number="2.2.3" class="anchored" data-anchor-id="using-indicator-variables-for-multiple-levels-of-a-categorical-predictor"><span class="header-section-number">2.2.3</span> Using indicator variables for multiple levels of a categorical predictor</h3>
+<p>Include ethnicity in the regression as a factor</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode" id="cb19"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>model_4 <span class="op">=</span> bmb.Model(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weight ~ c_height + male + C(ethnicity)"</span>, data<span class="op">=</span>earnings, dropna<span class="op">=</span><span class="va">True</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>idata_4 <span class="op">=</span> model_4.fit()</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>az.summary(idata_4, kind<span class="op">=</span><span class="st">"stats"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [8000/8000 00:04&lt;00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    
+</div>
+<div class="cell-output-display" data-execution_count="14">
+<div>
+
+<table class="dataframe table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>154.356</td>
+      <td>2.208</td>
+      <td>150.135</td>
+      <td>158.402</td>
+    </tr>
+    <tr>
+      <th>c_height</th>
+      <td>3.851</td>
+      <td>0.252</td>
+      <td>3.380</td>
+      <td>4.308</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>12.112</td>
+      <td>1.988</td>
+      <td>8.309</td>
+      <td>15.860</td>
+    </tr>
+    <tr>
+      <th>C(ethnicity)[Hispanic]</th>
+      <td>-6.132</td>
+      <td>3.546</td>
+      <td>-12.492</td>
+      <td>0.720</td>
+    </tr>
+    <tr>
+      <th>C(ethnicity)[Other]</th>
+      <td>-12.239</td>
+      <td>5.125</td>
+      <td>-20.977</td>
+      <td>-1.720</td>
+    </tr>
+    <tr>
+      <th>C(ethnicity)[White]</th>
+      <td>-5.208</td>
+      <td>2.261</td>
+      <td>-9.204</td>
+      <td>-0.890</td>
+    </tr>
+    <tr>
+      <th>weight_sigma</th>
+      <td>28.641</td>
+      <td>0.467</td>
+      <td>27.777</td>
+      <td>29.504</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="choose-the-baseline-category-by-setting-the-levels" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="choose-the-baseline-category-by-setting-the-levels"><span class="header-section-number">2.2.4</span> Choose the baseline category by setting the levels</h3>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode" id="cb20"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>earnings[<span class="st">"eth"</span>] <span class="op">=</span> pd.Categorical(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    earnings[<span class="st">"ethnicity"</span>],</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    categories<span class="op">=</span>[<span class="st">"White"</span>, <span class="st">"Black"</span>, <span class="st">"Hispanic"</span>, <span class="st">"Other"</span>],</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    ordered<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>model_5 <span class="op">=</span> bmb.Model(<span class="st">"weight ~ c_height + male + eth"</span>, data<span class="op">=</span>earnings, dropna<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>idata_5 <span class="op">=</span> model_5.fit()</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>az.summary(idata_5, kind<span class="op">=</span><span class="st">"stats"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [8000/8000 00:04&lt;00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    
+</div>
+<div class="cell-output-display" data-execution_count="15">
+<div>
+
+<table class="dataframe table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>149.133</td>
+      <td>0.971</td>
+      <td>147.309</td>
+      <td>150.953</td>
+    </tr>
+    <tr>
+      <th>c_height</th>
+      <td>3.857</td>
+      <td>0.252</td>
+      <td>3.388</td>
+      <td>4.334</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>12.077</td>
+      <td>1.995</td>
+      <td>8.223</td>
+      <td>15.741</td>
+    </tr>
+    <tr>
+      <th>eth[Black]</th>
+      <td>5.226</td>
+      <td>2.288</td>
+      <td>1.105</td>
+      <td>9.759</td>
+    </tr>
+    <tr>
+      <th>eth[Hispanic]</th>
+      <td>-0.924</td>
+      <td>2.954</td>
+      <td>-6.332</td>
+      <td>4.814</td>
+    </tr>
+    <tr>
+      <th>eth[Other]</th>
+      <td>-7.173</td>
+      <td>4.819</td>
+      <td>-15.649</td>
+      <td>2.175</td>
+    </tr>
+    <tr>
+      <th>weight_sigma</th>
+      <td>28.656</td>
+      <td>0.477</td>
+      <td>27.747</td>
+      <td>29.518</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<section id="alternatively-create-indicators-for-the-four-ethnic-groups-directly" class="level3" data-number="2.2.5">
+<h3 data-number="2.2.5" class="anchored" data-anchor-id="alternatively-create-indicators-for-the-four-ethnic-groups-directly"><span class="header-section-number">2.2.5</span> Alternatively create indicators for the four ethnic groups directly:</h3>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>earnings[<span class="st">"eth_white"</span>] <span class="op">=</span> earnings[<span class="st">"ethnicity"</span>] <span class="op">==</span> <span class="st">"White"</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>earnings[<span class="st">"eth_black"</span>] <span class="op">=</span> earnings[<span class="st">"ethnicity"</span>] <span class="op">==</span> <span class="st">"Black"</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>earnings[<span class="st">"eth_hispanic"</span>] <span class="op">=</span> earnings[<span class="st">"ethnicity"</span>] <span class="op">==</span> <span class="st">"Hispanic"</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>earnings[<span class="st">"eth_other"</span>] <span class="op">=</span> earnings[<span class="st">"ethnicity"</span>] <span class="op">==</span> <span class="st">"Other"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode" id="cb22"><pre class="sourceCode python cell-code code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>model_6 <span class="op">=</span> bmb.Model(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">"weight ~ c_height + male + eth_black + eth_hispanic + eth_other"</span>,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    data<span class="op">=</span>earnings,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    dropna<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>idata_6 <span class="op">=</span> model_6.fit()</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>az.summary(idata_6, kind<span class="op">=</span><span class="st">"stats"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+    <div>
+        <style>
+            /* Turns off some styling */
+            progress {
+                /* gets rid of default border in Firefox and Opera. */
+                border: none;
+                /* Needs to be in here for Safari polyfill so background images work as expected. */
+                background-size: auto;
+            }
+            .progress-bar-interrupted, .progress-bar-interrupted::-webkit-progress-bar {
+                background: #F44336;
+            }
+        </style>
+      <progress value="8000" class="" max="8000" style="width:300px; height:20px; vertical-align: middle;"></progress>
+      100.00% [8000/8000 00:15&lt;00:00 Sampling 4 chains, 0 divergences]
+    </div>
+    
+</div>
+<div class="cell-output-display" data-execution_count="17">
+<div>
+
+<table class="dataframe table">
+  <thead>
+    <tr>
+      <th></th>
+      <th>mean</th>
+      <th>sd</th>
+      <th>hdi_3%</th>
+      <th>hdi_97%</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Intercept</th>
+      <td>149.125</td>
+      <td>0.979</td>
+      <td>147.387</td>
+      <td>151.050</td>
+    </tr>
+    <tr>
+      <th>c_height</th>
+      <td>3.851</td>
+      <td>0.252</td>
+      <td>3.390</td>
+      <td>4.330</td>
+    </tr>
+    <tr>
+      <th>male</th>
+      <td>12.120</td>
+      <td>1.976</td>
+      <td>8.395</td>
+      <td>15.663</td>
+    </tr>
+    <tr>
+      <th>eth_black</th>
+      <td>5.191</td>
+      <td>2.225</td>
+      <td>1.037</td>
+      <td>9.428</td>
+    </tr>
+    <tr>
+      <th>eth_hispanic</th>
+      <td>-0.970</td>
+      <td>2.937</td>
+      <td>-6.516</td>
+      <td>4.384</td>
+    </tr>
+    <tr>
+      <th>eth_other</th>
+      <td>-7.013</td>
+      <td>4.819</td>
+      <td>-16.082</td>
+      <td>2.245</td>
+    </tr>
+    <tr>
+      <th>weight_sigma</th>
+      <td>28.656</td>
+      <td>0.474</td>
+      <td>27.810</td>
+      <td>29.576</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+<script type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    setTimeout(function() {
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  const viewSource = window.document.getElementById('quarto-view-source') ||
+                     window.document.getElementById('quarto-code-tools-source');
+  if (viewSource) {
+    const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+    viewSource.addEventListener("click", function(e) {
+      if (sourceUrl) {
+        if (/\bviewer_pane=1\b/.test(window.location)) {
+          window.open(sourceUrl);
+        } else {
+          window.location.href = sourceUrl;
+        }
+      } else {
+        const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+        modal.show();
+      }
+      return false;
+    });
+  }
+  function toggleCodeHandler(show) {
+    return function(e) {
+      const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+      for (let i=0; i<detailsSrc.length; i++) {
+        const details = detailsSrc[i].parentElement;
+        if (show) {
+          details.open = true;
+        } else {
+          details.removeAttribute("open");
+        }
+      }
+      const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+      const fromCls = show ? "hidden" : "unhidden";
+      const toCls = show ? "unhidden" : "hidden";
+      for (let i=0; i<cellCodeDivs.length; i++) {
+        const codeDiv = cellCodeDivs[i];
+        if (codeDiv.classList.contains(fromCls)) {
+          codeDiv.classList.remove(fromCls);
+          codeDiv.classList.add(toCls);
+        } 
+      }
+      return false;
+    }
+  }
+  const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+  if (hideAllCode) {
+    hideAllCode.addEventListener("click", toggleCodeHandler(false));
+  }
+  const showAllCode = window.document.getElementById("quarto-show-all-code");
+  if (showAllCode) {
+    showAllCode.addEventListener("click", toggleCodeHandler(true));
+  }
+  function tippyHover(el, contentFn) {
+    window.tippy(el, {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    }); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      let href = ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
+    tippyHover(ref, function() {
+      var popup = window.document.createElement('div');
+      cites.forEach(function(cite) {
+        var citeDiv = window.document.createElement('div');
+        citeDiv.classList.add('hanging-indent');
+        citeDiv.classList.add('csl-entry');
+        var biblioDiv = window.document.getElementById('ref-' + cite);
+        if (biblioDiv) {
+          citeDiv.innerHTML = biblioDiv.innerHTML;
+        }
+        popup.appendChild(citeDiv);
+      });
+      return popup.innerHTML;
+    });
+  }
+});
+</script>
+</main>
+<div class="page-navigation ">
+  <div class="nav-page nav-page-previous">
+      <a href="../../ros/ch10/kidiq.html">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Regression and Other Stories: KidIQ</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../ros/ch10/beauty.html">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Regression and Other Stories: Beauty and Teaching Quality</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</div>
+</div> <!-- /main column -->
+</div> <!-- /row -->
+</div> <!-- /container fluid -->
+
+
+</body></html>
