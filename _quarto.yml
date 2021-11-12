@@ -12,6 +12,7 @@ book:
       - ros/ch10/kidiq.ipynb
       - ros/ch10/height_and_weight.ipynb
       - ros/ch10/beauty.ipynb
+      - ros/ch10/congress.ipynb
 
 format:
   html:
