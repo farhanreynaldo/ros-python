@@ -5,6 +5,9 @@ project:
 book:
   title: "Regression and Other Stories: Python Implementation"
   author: "Farhan Reynaldo"
+  sidebar:
+    style: docked
+    background: light
   chapters:
     - index.md
     - part: "Chapter 10"
@@ -13,10 +16,19 @@ book:
       - ros/ch10/height_and_weight.ipynb
       - ros/ch10/beauty.ipynb
       - ros/ch10/congress.ipynb
+  page-navigation: true
+  footer:  
+    right: 
+      - icon: github
+        href: https://github.com/farhanreynaldo
+      - icon: twitter 
+        href: https://twitter.com/xynx 
 
 format:
   html:
-    theme: cosmo
+    theme: 
+      light: cosmo
+      dark: darkly
 
 
 
