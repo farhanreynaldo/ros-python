@@ -16,6 +16,7 @@ book:
       - ros/ch10/height_and_weight.ipynb
       - ros/ch10/beauty.ipynb
       - ros/ch10/congress.ipynb
+      - ros/ch10/nes_linear.ipynb
   page-navigation: true
   footer:  
     right: 
